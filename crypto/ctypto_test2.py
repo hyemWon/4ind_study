@@ -81,8 +81,9 @@ class fileAES():
         with open(filename, 'rb') as origin: # 암호화 파일
             filesize = unpack('<Q', origin.read(calcsize('<Q')))[0]
             aes = AES.new(self.key, AES.MODE_CBC, self.iv)
-            filename = filename[0:len(filename)-3] + file_exp
-            with open(filename, 'wb') as ret: # 복호화 파일
+            # filename = filename[0:len(filename)-3] + file_exp
+            new_filename = file_exp
+            with open(new_filename, 'wb') as ret: # 복호화 파일
                 ret.write(aes.decrypt(origin.read(16)))
                 while True:
                     block = origin.read(blocksize) # 1024 블록 단위로 복호화 진행. 16의 배수라면 ok
@@ -93,6 +94,6 @@ class fileAES():
 
 
 if __name__=='__main__':
-    aes = fileAES('helena', 'test_c')
-    # aes.encrypt_file('test')
-    aes.decrypt_file('test_c', '.txt')
+    aes = fileAES('helena', 'data_c.pkl')
+    # aes.encrypt_file('/home/fourind/py36/YOLOX/archive/data.pkl')
+    aes.decrypt_file('data_c.pkl', 'data_d.pkl')
