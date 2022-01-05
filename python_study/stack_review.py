@@ -1,29 +1,32 @@
-from typing import Optional
+from typing import Optional, Generic, TypeVar
 
-class Node:
-    def __init__(self, item, pointer: Optional["Node"]=None):
+T = TypeVar("T")
+
+
+class Node(Generic[T]):
+    def __init__(self, item: T, pointer: Optional["Node"]=None):
         self.item = item
         self.pointer = pointer
 
-class LinkedList:
+class LinkedList(Generic[T]):
     def __init__(self):
-        self.head: Optional[Node] = None
+        self.head: Optional[Node[T]] = None
 
     @property
     def length(self) -> int:
         if self.head is None:
             return 0
         count: int = 1
-        cur_node: Node = self.head
+        cur_node = self.head
         while cur_node.pointer is not None:
             cur_node = cur_node.pointer
             count += 1
         return count
 
 
-class Stack(LinkedList):
+class Stack(Generic[T], LinkedList[T]):
     def push(self, item):
-        new_node = Node(item=item)
+        new_node: Node[T] = Node[T](item=item)
 
         if self.head is None:
             self.head = new_node
